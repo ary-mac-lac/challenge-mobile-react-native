@@ -15,8 +15,8 @@ import { RootNavigatorParams } from '../../../Navigation'
 declare const global: { HermesInternal: null | Record<string, unknown> }
 
 interface Props {
-  navigation: StackNavigationProp<RootNavigatorParams, 'Root'>
-  route: RouteProp<RootNavigatorParams, 'Root'>
+  navigation: StackNavigationProp<RootNavigatorParams, 'Example'>
+  route: RouteProp<RootNavigatorParams, 'Example'>
 }
 
 const ExampleScreen: React.FC<Props> = () => {
