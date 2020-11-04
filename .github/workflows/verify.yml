@@ -1,0 +1,45 @@
+name: Verify code
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Check tests
+        run: yarn test --coverage
+
+      # To use Codecov:
+      # 1. make an account
+      # 2. add your repo
+      # 3. add the provided token to your repo's secrets under the name CODECOV_TOKEN
+      # 3A. (Alternatively, choose another name for your secret and then swap out CODECOV_TOKEN below)
+      # 4. Uncomment the following job
+
+      # - name: Codecov
+      #   uses: codecov/codecov-action@v1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Typecheck code
+        run: yarn typecheck
+
+      - name: Lint code
+        run: yarn lint
+
+      - name: Lint commit message
+        uses: wagoid/commitlint-github-action@v1

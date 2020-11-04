@@ -1,0 +1,41 @@
+name: E2E Test
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.2.app
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Cache pods
+        uses: actions/cache@v2
+        id: pod-cache
+        with:
+          path: ./ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+      - name: Install pods
+        if: steps.pod-cache.outputs.cache-hit != 'true'
+        run: pod install
+        working-directory: ./ios
+
+      - name: Install simulator utils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Detox build
+        run: yarn detox build --configuration ios.sim.release
+
+      - name: Detox test
+        run: yarn detox test --configuration ios.sim.release --cleanup
