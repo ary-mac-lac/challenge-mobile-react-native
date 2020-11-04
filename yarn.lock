@@ -2061,6 +2061,11 @@
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
 
+"@types/js-md5@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@types/js-md5/-/js-md5-0.4.2.tgz#95b39911e2081bf2915436e61cc345e12459e5bb"
+  integrity sha512-FUPoQkpQTzA5wz9ebrdVRjsjQsFehr+cW1CVhLcI2UwD/SO/4NHPO1esrXPPbx7ux762U0POmWFSrUjQq2ophw==
+
 "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.5":
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"
@@ -9270,6 +9275,18 @@ react-popper@^1.3.7:
     prop-types "^15.6.1"
     typed-styles "^0.0.7"
     warning "^4.0.2"
+
+react-query-native-devtools@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-query-native-devtools/-/react-query-native-devtools-0.3.2.tgz#967471d08f786896f8afda223b04c8e2785eb200"
+  integrity sha512-N3Qeb4iRAqscY6O1TnQ2+Lh/c8kmzmVVX4NlDHf5U2VCvhkX9kbF0J+nr1B7Ji8ahimON+sMLV0zVmH8QDc/dg==
+
+react-query@^2.26.1:
+  version "2.26.1"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.26.1.tgz#9e6c47384a40e3323da4be961553943998784aa4"
+  integrity sha512-7J280iWlb7LZW1eGvOnZwm4logE5Wpq+0rHHcnNjzpK3TW1pAPaPQYp3yE2Z4j5FOtWYhK64hoK2IsVOUCbRRw==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
 
 react-redux@^7.2.2:
   version "7.2.2"
