@@ -1,8 +1,8 @@
 name: Verify code
 
 on:
-  pull_request:
-    branches: [main, develop]
+  push:
+    branches: [master]
 
 jobs:
   verify:
