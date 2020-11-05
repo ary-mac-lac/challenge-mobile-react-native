@@ -1,4 +1,4 @@
-import ExampleFeature from './Example'
+import ExampleFeature from './Listing'
 
 export default {
   ExampleFeature,

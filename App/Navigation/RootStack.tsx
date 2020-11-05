@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import ExampleFeature from '../Features/Example'
+import ExampleFeature from '../Features/Listing'
 
 export type RootNavigatorParams = {
   Example: undefined
