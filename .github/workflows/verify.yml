@@ -21,7 +21,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Check tests
-        run: yarn test --coverage
+        run: yarn test:unit --coverage
 
       # To use Codecov:
       # 1. make an account
