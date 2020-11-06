@@ -1,4 +1,4 @@
-import ExampleScreen from './ExampleScreen'
+import ExampleScreen from './ListingScreen'
 
 export default {
   ExampleScreen,
