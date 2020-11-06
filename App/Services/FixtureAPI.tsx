@@ -1,14 +1,18 @@
-import { API } from './API'
+import { API } from './MarvelAPI'
 import { buildResponse, timeout } from '../Utils'
 
-const fixtureAPI: API = {
+import ListingFeatureFixtures from '../Features/Listing/Fixtures'
+
+const create = (): API => ({
   getCharacters: async () => {
     await timeout(1000)
     return buildResponse({
       ok: true,
-      data: null,
+      data: ListingFeatureFixtures.success,
     })
   },
-}
+})
 
-export default fixtureAPI
+export default {
+  create,
+}
