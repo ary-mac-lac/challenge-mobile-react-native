@@ -1,7 +1,7 @@
+// @ts-nocheck
 import { ApiResponse } from 'apisauce'
 
-const buildResponse = ({ ok, data }: { ok: boolean; data: unknown }): ApiResponse<unknown, null> => {
-  // @ts-ignore
+const buildResponse = <T>({ ok, data }: { ok: boolean; data: unknown }): ApiResponse<T, null> => {
   return {
     ok,
     data,
