@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import API from '../Services/API'
+import API from '../Services/MarvelAPI'
 
 const api = API.create()
 
@@ -9,7 +9,7 @@ const TestingScreen = (): JSX.Element => {
     <View style={styles.container}>
       <TouchableOpacity
         onPress={async () => {
-          const response = await api.getCharacters()
+          const response = await api.getCharacters({ cursor: 0 })
           console.log(response)
         }}>
         <Text>Fazer chamada</Text>
