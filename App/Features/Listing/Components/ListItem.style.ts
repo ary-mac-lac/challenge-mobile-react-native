@@ -10,7 +10,7 @@ export default () =>
       marginVertical: 16,
       alignItems: 'center',
       height: 100,
-      backgroundColor: 'orange',
+      backgroundColor: '#FEFEFE',
     },
     title: {
       fontSize: 16,
@@ -19,16 +19,31 @@ export default () =>
     description: {
       flex: 1,
       marginTop: 8,
+      lineHeight: 20,
       backgroundColor: 'white',
+    },
+    unavailable: {
+      color: '#AAA',
+      lineHeight: 20,
+      marginTop: 8,
     },
     image: {
       aspectRatio: 1,
       height: IMG_SIZE,
       borderRadius: IMG_SIZE / 2,
     },
+    imageContainer: {
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65,
+      elevation: 6,
+    },
     textContainer: {
-      marginLeft: 16,
+      marginLeft: 20,
       flexShrink: 1,
-      backgroundColor: 'pink',
     },
   })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useInfiniteQuery } from 'react-query'
-import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem } from 'react-native'
+import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem, Text } from 'react-native'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
@@ -78,7 +78,19 @@ const ListingScreen: React.FC<Props> = () => {
         />
       )}
       {isLoading && <ActivityIndicator size={'large'} />}
+      <Attibution text={queryWrapper?.[0]?.attributionText ?? ''} />
     </SafeAreaView>
+  )
+}
+
+const Attibution = ({ text }: { text: string }) => {
+  const styles = getStyle()
+
+  return (
+    <>
+      <Separator style={styles.attributionSeparator} />
+      <Text style={styles.attribution}>{text}</Text>
+    </>
   )
 }
 
