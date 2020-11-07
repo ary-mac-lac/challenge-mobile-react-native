@@ -1,24 +1,22 @@
 import React from 'react'
 import { useInfiniteQuery } from 'react-query'
-import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem, Text } from 'react-native'
-import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem, Text } from 'react-native'
 
 import reduceToData from '../Utils/reduceToData'
 import { Character } from '../../../Entities'
-import { RootNavigatorParams } from '../../../Navigation'
 import { api } from '../../../Services'
 import ListItem from '../Components/ListItem'
 import Separator from '../../../Components/Separator'
+import { MainNavigatorParams } from '../../../Navigation'
 
 import getStyle from './ListingScreen.style'
 
 interface Props {
-  navigation: StackNavigationProp<RootNavigatorParams, 'ListingScreen'>
-  route: RouteProp<RootNavigatorParams, 'ListingScreen'>
+  navigation: StackNavigationProp<MainNavigatorParams, 'ListingScreen'>
 }
 
-const ListingScreen: React.FC<Props> = () => {
+const ListingScreen: React.FC<Props> = ({ navigation }) => {
   const styles = getStyle()
 
   const getCharacters = (_: string, cursor = 0) =>
@@ -52,7 +50,20 @@ const ListingScreen: React.FC<Props> = () => {
       imgSource = thumbnail.path + '.' + thumbnail.extension
     }
 
-    return <ListItem key={item.id} title={item.name} description={item.description} imgSource={imgSource} />
+    return (
+      <ListItem
+        key={item.id}
+        title={item.name}
+        onPress={() => {
+          // Events not handled by the current navigator bubble up to parent navigators
+          // However, navigate() only typechecks for screens in current navigator
+          // @ts-ignore
+          navigation.navigate('ModalStack', { screen: 'DetailsScren' })
+        }}
+        description={item.description}
+        imgSource={imgSource}
+      />
+    )
   }
 
   // Flatten useInfiniteQuery's array of marvel wrapper arrays into a single data array
@@ -83,9 +94,9 @@ const ListingScreen: React.FC<Props> = () => {
   )
 }
 
+// TODO: Extract to its own file
 const Attibution = ({ text }: { text: string }) => {
   const styles = getStyle()
-
   return (
     <>
       <Separator style={styles.attributionSeparator} />
@@ -94,6 +105,7 @@ const Attibution = ({ text }: { text: string }) => {
   )
 }
 
+// TODO: Might not be necessary
 const FetchingMore = ({ isLoading }: { isLoading: boolean }) => (
   <View>
     <ActivityIndicator animating={isLoading} />

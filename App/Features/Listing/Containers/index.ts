@@ -1,5 +1,13 @@
-import ExampleScreen from './ListingScreen'
+import ListingScreen from './ListingScreen'
+import DetailsScreen from './DetailsScreen'
+
+// TODO: Comment explaining why this is exported this way
 
 export default {
-  ExampleScreen,
+  modals: {
+    details: DetailsScreen,
+  },
+  full: {
+    listing: ListingScreen,
+  },
 }
