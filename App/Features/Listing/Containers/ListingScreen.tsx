@@ -57,8 +57,7 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
         onPress={() => {
           // Events not handled by the current navigator bubble up to parent navigators
           // However, navigate() only typechecks for screens in current navigator
-          // @ts-ignore
-          navigation.navigate('ModalStack', { screen: 'DetailsScren' })
+          navigation.navigate('ModalStack', { screen: 'DetailsScreen', params: { character: item } })
         }}
         description={item.description}
         imgSource={imgSource}

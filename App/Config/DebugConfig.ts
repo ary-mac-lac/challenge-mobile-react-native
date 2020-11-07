@@ -1,5 +1,5 @@
 export default {
-  useFixtures: false,
+  useFixtures: true,
   useStorybook: false,
   useTestingScreen: false,
 }

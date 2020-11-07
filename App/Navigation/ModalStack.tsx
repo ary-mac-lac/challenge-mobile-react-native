@@ -1,10 +1,11 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import { Character } from '../Entities'
 import ListingFeature from '../Features/Listing'
 
 export type ModalNavigatorParams = {
-  DetailsScreen: undefined
+  DetailsScreen: { character: Character }
 }
 
 const Stack = createStackNavigator<ModalNavigatorParams>()

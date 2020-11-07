@@ -25,7 +25,7 @@ const create = (baseURL = 'https://gateway.marvel.com') => {
   const getCharacters = ({ cursor }: { cursor: number }): Promise<ApiResponse<CharacterDataWrapper, null>> =>
     api.get('/v1/public/characters', {
       offset: cursor,
-      limit: 2,
+      orderBy: 'name',
     })
 
   return {
