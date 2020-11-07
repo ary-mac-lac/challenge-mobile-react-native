@@ -27,4 +27,4 @@ const ListItem: React.FC<Props> = ({ onPress, imgSource, title = '', description
   )
 }
 
-export default ListItem
+export default React.memo(ListItem)

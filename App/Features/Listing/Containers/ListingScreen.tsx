@@ -1,22 +1,15 @@
 import React from 'react'
 import { useInfiniteQuery } from 'react-query'
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  ActivityIndicator,
-  FlatList,
-  ListRenderItem,
-} from 'react-native'
+import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem } from 'react-native'
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
-import { ReactQueryWrapper, CharacterDataWrapper, Character } from '../../../Entities'
+import reduceToData from '../Utils/reduceToData'
+import { Character } from '../../../Entities'
 import { RootNavigatorParams } from '../../../Navigation'
 import { api } from '../../../Services'
 import ListItem from '../Components/ListItem'
+import Separator from '../../../Components/Separator'
 
 import getStyle from './ListingScreen.style'
 
@@ -28,40 +21,28 @@ interface Props {
 const ListingScreen: React.FC<Props> = () => {
   const styles = getStyle()
 
-  const getCharacters = (_: string, cursor = 0) => api.getCharacters({ cursor })
+  const getCharacters = (_: string, cursor = 0) =>
+    api.getCharacters({ cursor }).then((response) => {
+      return response.ok ? response.data : {}
+    })
 
-  const { data: queryWrapper, isFetching } = useInfiniteQuery('getCharacters', getCharacters, {
-    getFetchMore: ({ data: marvelWrapper }) => {
-      const offset = marvelWrapper?.data?.offset ?? 0
-      const limit = marvelWrapper?.data?.limit ?? 0
-      const total = marvelWrapper?.data?.total ?? -Infinity
+  const {
+    data: queryWrapper,
+    canFetchMore,
+    refetch,
+    fetchMore,
+    isFetching,
+    isLoading,
+    isFetchingMore,
+  } = useInfiniteQuery('getCharacters', getCharacters, {
+    getFetchMore: (response) => {
+      const offset = response?.data?.offset ?? 0
+      const limit = response?.data?.limit ?? 0
+      const total = response?.data?.total ?? -Infinity
       const cursor = offset + limit
-
-      // No more items available
-      if (cursor > total) {
-        return false
-      }
-
-      // Fetch next batch of items starting at cursor
-      return cursor
+      return cursor > total ? false : cursor
     },
   })
-
-  // TODO: Extract and rename to reduceToData
-  const flatten = (reactQueryWrapper: ReactQueryWrapper<CharacterDataWrapper>) => {
-    if (!reactQueryWrapper) {
-      return []
-    }
-
-    return reactQueryWrapper.reduce((accum, apiSauceWrapper) => {
-      const marvelWrapper = apiSauceWrapper?.data
-      const batchWrapper = marvelWrapper?.data
-      const results = batchWrapper?.results ?? []
-
-      // Fix this absurd wrapper within wrapper situation
-      return [...accum, ...results]
-    }, [] as Character[])
-  }
 
   const renderItem: ListRenderItem<Character> = ({ item }) => {
     const { thumbnail } = item
@@ -74,14 +55,39 @@ const ListingScreen: React.FC<Props> = () => {
     return <ListItem key={item.id} title={item.name} description={item.description} imgSource={imgSource} />
   }
 
-  const data = flatten(queryWrapper)
+  // Flatten useInfiniteQuery's array of marvel wrapper arrays into a single data array
+  const data = reduceToData(queryWrapper)
 
   return (
     <SafeAreaView testID={'e2e-smoke-test'} style={styles.container}>
-      {!isFetching && <FlatList renderItem={renderItem} keyExtractor={(item) => `${item.id}`} data={data} />}
-      {isFetching && <ActivityIndicator size={'large'} />}
+      {!isLoading && (
+        <FlatList
+          refreshing={isFetching && !isLoading}
+          onRefresh={() => refetch()}
+          onEndReachedThreshold={0.1}
+          onEndReached={() => {
+            if (canFetchMore) {
+              fetchMore()
+            }
+          }}
+          renderItem={renderItem}
+          keyExtractor={(item) => `${item.id}`}
+          data={data}
+          ListFooterComponent={<FetchingMore isLoading={!!isFetchingMore} />}
+          ItemSeparatorComponent={Separator}
+        />
+      )}
+      {isLoading && <ActivityIndicator size={'large'} />}
     </SafeAreaView>
   )
 }
+
+const FetchingMore = ({ isLoading }: { isLoading: boolean }) => (
+  <View>
+    <ActivityIndicator animating={isLoading} />
+  </View>
+)
+
+ListingScreen.whyDidYouRender = false
 
 export default ListingScreen
