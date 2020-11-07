@@ -1,4 +1,4 @@
-import { clamp, padStart } from 'lodash'
+import { clamp } from '../Numbers'
 
 const addOpacity = (color: string, opacity: number): string => {
   const normalizedOpacity = clamp(opacity, 0, 1)
@@ -7,7 +7,7 @@ const addOpacity = (color: string, opacity: number): string => {
     .toString(16)
     .toUpperCase()
 
-  const normalizedAlpha = padStart(alpha, 2, '0')
+  const normalizedAlpha = alpha.padStart(2, '0')
 
   return `${color}${normalizedAlpha}`
 }
