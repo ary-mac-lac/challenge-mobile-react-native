@@ -39,7 +39,7 @@ describe('Title requirements', () => {
   })
 
   test('Should render empty string if not passed a title', () => {
-    const listitem = new ListItemPage({})
+    const listitem = new ListItemPage({ title: undefined })
     expect(listitem.title).toHaveTextContent('')
   })
 })
@@ -57,17 +57,19 @@ describe('Description requirements', () => {
   })
 })
 
+// TODO: Test favorite behavior
+
 class ListItemPage {
   self: ReactTestInstance
   image: ReactTestInstance
   title: ReactTestInstance
   description: ReactTestInstance
 
-  constructor(props: Partial<Props>) {
-    const { getByTestId } = render(<ListItem {...props} />)
+  constructor({ title = 'Testing', ...other }: Partial<Props>) {
+    const { getByTestId } = render(<ListItem {...other} title={title} isFavorite={true} />)
 
-    this.self = getByTestId('list-item')
-    this.image = getByTestId('list-item-image')
+    this.self = getByTestId(`list-item-${title}`)
+    this.image = getByTestId('thumbnail-image')
     this.title = getByTestId('list-item-title')
     this.description = getByTestId('list-item-description')
   }
