@@ -1,14 +1,17 @@
 import React from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem, Text } from 'react-native'
+import { useSelector } from 'react-redux'
 
-import reduceToData from '../Utils/reduceToData'
+import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem } from 'react-native'
+
+import { reduceToData, makeURIString } from '../Utils'
 import { Character } from '../../../Entities'
-import { api } from '../../../Services'
-import ListItem from '../Components/ListItem'
-import Separator from '../../../Components/Separator'
+import { ListItem, Attribution } from '../Components'
+import { Separator } from '../../../Components'
 import { MainNavigatorParams } from '../../../Navigation'
+import Services from '../../../Services'
+import UserFeature from '../../../Features/User'
 
 import getStyle from './ListingScreen.style'
 
@@ -17,10 +20,11 @@ interface Props {
 }
 
 const ListingScreen: React.FC<Props> = ({ navigation }) => {
+  const favorites = useSelector(UserFeature.selectors.getFavorites)
   const styles = getStyle()
 
   const getCharacters = (_: string, cursor = 0) =>
-    api.getCharacters({ cursor }).then((response) => {
+    Services.api.getCharacters({ cursor }).then((response) => {
       return response.ok ? response.data : {}
     })
 
@@ -42,22 +46,22 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
     },
   })
 
+  const attribution = queryWrapper?.[0]?.attributionText ?? ''
+
   const renderItem: ListRenderItem<Character> = ({ item }) => {
     const { thumbnail } = item
-    let imgSource
-
-    if (thumbnail?.extension && thumbnail.path) {
-      imgSource = thumbnail.path + '.' + thumbnail.extension
-    }
+    const imgSource = makeURIString(thumbnail)
 
     return (
       <ListItem
         key={item.id}
         title={item.name}
+        isFavorite={!!favorites[item.id || -1]}
         onPress={() => {
           // Events not handled by the current navigator bubble up to parent navigators
           // However, navigate() only typechecks for screens in current navigator
-          navigation.navigate('ModalStack', { screen: 'DetailsScreen', params: { character: item } })
+          // @ts-ignore
+          navigation.navigate('ModalStack', { screen: 'DetailsScreen', params: { attribution, character: item } })
         }}
         description={item.description}
         imgSource={imgSource}
@@ -72,6 +76,8 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView testID={'e2e-smoke-test'} style={styles.container}>
       {!isLoading && (
         <FlatList
+          testID={'list'}
+          extraData={favorites}
           refreshing={isFetching && !isLoading}
           onRefresh={() => refetch()}
           onEndReachedThreshold={0.1}
@@ -87,27 +93,16 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
           ItemSeparatorComponent={Separator}
         />
       )}
-      {isLoading && <ActivityIndicator size={'large'} />}
-      <Attibution text={queryWrapper?.[0]?.attributionText ?? ''} />
+      {isLoading && <ActivityIndicator testID={'fetching-more-indicator'} size={'large'} />}
+      <Attribution text={attribution} />
     </SafeAreaView>
-  )
-}
-
-// TODO: Extract to its own file
-const Attibution = ({ text }: { text: string }) => {
-  const styles = getStyle()
-  return (
-    <>
-      <Separator style={styles.attributionSeparator} />
-      <Text style={styles.attribution}>{text}</Text>
-    </>
   )
 }
 
 // TODO: Might not be necessary
 const FetchingMore = ({ isLoading }: { isLoading: boolean }) => (
   <View>
-    <ActivityIndicator animating={isLoading} />
+    <ActivityIndicator animating={isLoading} testID={'initial-loading-indicator'} />
   </View>
 )
 
