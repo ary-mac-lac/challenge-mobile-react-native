@@ -1,3 +1,5 @@
+// Interfaces taken from Marvel API Documentation
+
 export interface CharacterDataWrapper {
   code?: number
   status?: string
@@ -40,51 +42,24 @@ export interface Image {
   extension?: string
 }
 
-export interface ComicList {
+export interface List<T> {
   available?: number
   returned?: number
   collectionURI?: string
-  items?: ComicSummary[]
+  items?: T[]
 }
 
-export interface ComicSummary {
+export interface Summary {
   resourceURI?: string
   name?: string
 }
 
-export interface StoryList {
-  available?: number
-  returned?: number
-  collectionURI?: string
-  items?: StorySummary[]
-}
+export type ComicList = List<ComicSummary>
+export type StoryList = List<StorySummary>
+export type EventList = List<EventSummary>
+export type SeriesList = List<SeriesSummary>
 
-export interface StorySummary {
-  resourceURI?: string
-  name?: string
-  type?: string
-}
-
-export interface EventList {
-  available?: number
-  returned?: number
-  collectionURI?: string
-  items?: EventSummary[]
-}
-
-export interface EventSummary {
-  resourceURI?: string
-  name?: string
-}
-
-export interface SeriesList {
-  available?: number
-  returned?: number
-  collectionURI?: string
-  items?: SeriesSummary[]
-}
-
-export interface SeriesSummary {
-  resourceURI?: string
-  name?: string
-}
+export type SeriesSummary = Summary
+export type ComicSummary = Summary
+export type EventSummary = Summary
+export type StorySummary = Summary & { type?: string }
