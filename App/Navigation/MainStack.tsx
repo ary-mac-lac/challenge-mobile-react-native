@@ -12,7 +12,11 @@ const Stack = createStackNavigator<MainNavigatorParams>()
 export const MainStack = (): JSX.Element => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ListingScreen" component={ListingFeature.screens.full.listing} />
+      <Stack.Screen
+        name="ListingScreen"
+        options={{ headerTitle: 'Marvel Characters' }}
+        component={ListingFeature.screens.full.listing}
+      />
     </Stack.Navigator>
   )
 }
