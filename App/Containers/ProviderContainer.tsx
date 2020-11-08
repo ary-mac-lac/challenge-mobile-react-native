@@ -9,15 +9,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { QueryCache, ReactQueryCacheProvider } from 'react-query'
+import { ReactQueryCacheProvider } from 'react-query'
 
-import configureStore from '../Redux'
+import { ReduxConfig, ReacyQueryConfig } from '../Config'
 import { ConfigContainer } from './ConfigContainer'
 import { NavigationRef } from '../Services/Navigation'
 
-const { store, persistor } = configureStore()
-
-const queryCache = new QueryCache()
+const { store, persistor } = ReduxConfig.createStore()
+export const queryCache = ReacyQueryConfig.getQueryCache()
 
 if (__DEV__) {
   import('react-query-native-devtools').then(({ addPlugin }) => {
