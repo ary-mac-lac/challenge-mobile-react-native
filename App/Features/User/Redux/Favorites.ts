@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-/*
- * Lookup should be O(1) for quick `isFavorite` checks, which is why `favorites` state is an object, not an array
- * In an ideal world, the `favorites` state would a Set (O(1) for both lookup and deletion)
- * However, Sets aren't serializable and thus don't work well with Redux
- * Mor information: https://redux.js.org/style-guide/style-guide#do-not-put-non-serializable-values-in-state-or-actions
- */
-
+// Lookup should be O(1) for quick `isFavorite` checks, which is why `favorites` state is an object, not an array
 export interface FavoritesList {
   [id: string]: true | undefined
 }

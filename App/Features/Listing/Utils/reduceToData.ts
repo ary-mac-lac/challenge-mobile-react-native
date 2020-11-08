@@ -1,9 +1,8 @@
-import { CharacterDataWrapper, Character } from '../../../Entities'
+import { CharacterDataWrapper, Character, ReactQueryWrapper } from '../../../Entities'
 
 //TODO: Add comment explaining the necessity of this function
-//TODO: Extract this entity to Entities/Wrappers file
 
-export default (reactQueryWrapper: (CharacterDataWrapper | undefined)[] | undefined): Character[] => {
+export default (reactQueryWrapper: ReactQueryWrapper<CharacterDataWrapper>): Character[] => {
   if (!reactQueryWrapper) {
     return []
   }
