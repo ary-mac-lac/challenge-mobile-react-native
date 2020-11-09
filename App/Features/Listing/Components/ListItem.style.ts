@@ -16,7 +16,6 @@ export default () =>
       fontWeight: '700',
     },
     description: {
-      flex: 1,
       marginTop: 16,
       lineHeight: 20,
     },
@@ -27,7 +26,7 @@ export default () =>
     },
     textContainer: {
       marginLeft: 20,
-      flex: 1,
+      flexShrink: 1,
     },
     row: {
       flexDirection: 'row',

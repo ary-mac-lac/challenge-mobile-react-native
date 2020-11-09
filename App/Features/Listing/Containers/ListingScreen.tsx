@@ -115,7 +115,7 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
             extraData={favorites}
             refreshing={isFetching && !isLoading}
             onRefresh={onRefresh}
-            onEndReachedThreshold={0.1}
+            onEndReachedThreshold={0.2}
             onEndReached={onEndReached}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
