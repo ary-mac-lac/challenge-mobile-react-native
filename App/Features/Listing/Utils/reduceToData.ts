@@ -1,13 +1,15 @@
 import { CharacterDataWrapper, Character, ReactQueryWrapper } from '../../../Entities'
 
-//TODO: Add comment explaining the necessity of this function
+// Redux Query's useInfiniteQuery hook returns an array of data where each object
+// is the result of a call to the same endpoint, at a different cursor position (ex. 0-20, 21-40).
+// This function reduces the array of resource arrays (characters, comics, etc) into a single array
 
-export default (reactQueryWrapper: ReactQueryWrapper<CharacterDataWrapper>): Character[] => {
-  if (!reactQueryWrapper) {
+export default (infinteQueryResultsArray: ReactQueryWrapper<CharacterDataWrapper>): Character[] => {
+  if (!infinteQueryResultsArray) {
     return []
   }
 
-  return reactQueryWrapper.reduce((accum, marvelWrapper) => {
+  return infinteQueryResultsArray.reduce((accum, marvelWrapper) => {
     const results = marvelWrapper?.data?.results ?? []
     return [...accum, ...results]
   }, [] as Character[])
