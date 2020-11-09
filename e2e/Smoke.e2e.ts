@@ -1,3 +1,4 @@
+// @ts-nocheck
 describe('E2E', () => {
   beforeEach(async () => {
     await device.reloadReactNative()
@@ -7,3 +8,5 @@ describe('E2E', () => {
     await expect(element(by.id('e2e-smoke-test'))).toBeVisible()
   })
 })
+
+export default ''

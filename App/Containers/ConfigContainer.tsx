@@ -9,7 +9,8 @@ import { StatusBar, View, StyleSheet } from 'react-native'
 import whyDidYouRender from '@welldone-software/why-did-you-render'
 
 import { RootStack, TestingStack } from '../Navigation'
-import { DebugConfig, StorybookUI } from '../Config'
+import { DebugConfig } from '../Config'
+import StorybookUI from '../../storybook'
 
 if (__DEV__) {
   whyDidYouRender(React, {
