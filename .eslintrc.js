@@ -22,7 +22,6 @@ module.exports = {
     // Most of these plugins come with @react-native-community
     'react',
     'react-native',
-    'jsx-a11y',
     'import',
     'prettier',
     'react-hooks',
@@ -35,7 +34,7 @@ module.exports = {
     '@react-native-community',
     'eslint:recommended',
     'plugin:import/typescript',
-    'plugin:jsx-a11y/recommended',
+    'plugin:react-native-a11y/all',
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
@@ -49,6 +48,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/prop-types': 'off',
   },
 }
