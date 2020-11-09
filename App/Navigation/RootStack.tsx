@@ -20,6 +20,7 @@ export const RootStack = (): JSX.Element => {
       mode="modal"
       screenOptions={{
         headerShown: false,
+        gestureEnabled: true,
         cardStyle: { backgroundColor: 'transparent' },
         cardOverlayEnabled: true,
         cardStyleInterpolator: ({ current, layouts }) => {
@@ -31,7 +32,7 @@ export const RootStack = (): JSX.Element => {
           return {
             cardStyle: { transform: [{ translateY }] },
             overlayStyle: {
-              backgroundColor: addOpacity('#000000', 0.3),
+              backgroundColor: addOpacity('#000000', 0.5),
               opacity,
             },
           }

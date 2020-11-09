@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/react-native'
 import IconButton from './IconButton'
 
 storiesOf('Primary Button', module)
+  // @ts-ignore
   .addDecorator((storyFn) => <View style={styles.decorator}>{storyFn()}</View>)
   .add('Favoritar', () => <IconButton onPress={() => {}} icon={'star'} />)
   .add('Desfavoritar', () => <IconButton onPress={() => {}} icon={'star-outline'} />)

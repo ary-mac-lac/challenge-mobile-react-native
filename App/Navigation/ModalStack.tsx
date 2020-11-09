@@ -14,6 +14,7 @@ export const ModalStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       screenOptions={{
+        cardOverlayEnabled: false,
         headerShown: false,
         cardStyle: { backgroundColor: 'transparent' },
       }}>
