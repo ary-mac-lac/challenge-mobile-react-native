@@ -6,22 +6,18 @@
  * The store is set in the configureStore() stage of the redux state creation.
  */
 
-import { EnhancedStore } from '@reduxjs/toolkit'
-import { GlobalState } from '.'
+import { GlobalStore, GlobalState } from '../../Entities'
 
-// TODO: Rextract redux entities into their own file
-type Store = EnhancedStore<GlobalState, any>
+let _store: GlobalStore | undefined
 
-let _store: Store | undefined
-
-const GlobalStore = {
-  get: (): Store | undefined => _store,
+const Store = {
+  get: (): GlobalStore | undefined => _store,
   getState: (): GlobalState | undefined => _store?.getState(),
-  set: (store: Store): void => {
+  set: (store: GlobalStore): void => {
     _store = store
   },
 }
 
-Object.freeze(GlobalStore)
+Object.freeze(Store)
 
-export default GlobalStore
+export default Store

@@ -1,18 +1,17 @@
 import React from 'react'
 import { useInfiniteQuery } from 'react-query'
-import { StackNavigationProp } from '@react-navigation/stack'
 import { useSelector } from 'react-redux'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { SafeAreaView, ActivityIndicator, FlatList, ListRenderItem } from 'react-native'
 
-import { SafeAreaView, View, ActivityIndicator, FlatList, ListRenderItem } from 'react-native'
-
-import { reduceToData, makeURIString } from '../Utils'
+import { reduceToData, makeURIString, filterData, getAttributionText } from '../Utils'
 import { Character } from '../../../Entities'
-import { ListItem, Attribution, SearchField } from '../Components'
-import { Separator, Button } from '../../../Components'
+import { ListItem, Attribution, FetchingMore, FilterHeader } from '../Components'
+import { Separator } from '../../../Components'
+import { NOT_FOUND } from '../../../Constants/Misc'
 import { MainNavigatorParams } from '../../../Navigation'
 import Services from '../../../Services'
 import UserFeature from '../../../Features/User'
-import Selectors from '../Selectors'
 
 import getStyle from './ListingScreen.style'
 
@@ -21,9 +20,8 @@ interface Props {
 }
 
 const ListingScreen: React.FC<Props> = ({ navigation }) => {
-  const [nameFilter, setNameFilter] = React.useState('')
+  const [nameFilter, setNameFilter] = React.useState<string>('')
   const [favoritesFilter, setFavoritesFilter] = React.useState<boolean>()
-
   const favorites = useSelector(UserFeature.selectors.getFavorites)
   const styles = getStyle()
 
@@ -52,24 +50,33 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
     },
   })
 
-  const renderItem: ListRenderItem<Character> = ({ item }) => {
-    const { thumbnail } = item
+  const renderItem: ListRenderItem<Character> = ({ item: character }) => {
+    const { thumbnail } = character
     const imgSource = makeURIString(thumbnail)
+    const isFavorite = !!favorites[character.id || NOT_FOUND]
+    const onPress = () => {
+      // @ts-ignore - Events not handled by current navigator bubble up to parents. However, navigate() only typechecks for screens in current navigator
+      navigation.navigate('ModalStack', { screen: 'DetailsScreen', params: { attribution, character } })
+    }
 
     return (
       <ListItem
-        key={item.id}
-        title={item.name}
-        isFavorite={!!favorites[item.id || -1]}
-        onPress={() => {
-          // Events not handled by the current navigator bubble up to parent navigators. However, navigate() only typechecks for screens in current navigator
-          // @ts-ignore
-          navigation.navigate('ModalStack', { screen: 'DetailsScreen', params: { attribution, character: item } })
-        }}
-        description={item.description}
+        key={character.id}
+        title={character.name}
+        isFavorite={isFavorite}
+        onPress={onPress}
+        description={character.description}
         imgSource={imgSource}
       />
     )
+  }
+
+  const toggleFavoritesFilter = () => {
+    if (favoritesFilter) {
+      setFavoritesFilter(false)
+    } else {
+      setFavoritesFilter(true)
+    }
   }
 
   const areFiltersActive = !!nameFilter || !!favoritesFilter
@@ -81,12 +88,11 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
   // Cannot pass ´refetch´ directly because passing an argument to this function causes side-effects
   const onRefresh = () => refetch()
 
-  const attribution = queryWrapper?.[0]?.attributionText ?? ''
+  const attribution = getAttributionText(queryWrapper)
 
   // Flatten useInfiniteQuery's array of marvel wrappers into a single data array
   const arrayData = reduceToData(queryWrapper)
-
-  const filteredData = Selectors.characters.filter({
+  const filteredData = filterData({
     data: arrayData,
     by: { isFavorite: favoritesFilter, name: nameFilter },
   })
@@ -94,48 +100,36 @@ const ListingScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView testID={'e2e-smoke-test'} style={styles.container}>
       {!isLoading && (
-        <FlatList
-          testID={'list'}
-          extraData={favorites}
-          refreshing={isFetching && !isLoading}
-          onRefresh={onRefresh}
-          onEndReachedThreshold={0.1}
-          onEndReached={onEndReached}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          data={filteredData}
-          ListHeaderComponent={
-            // TODO: Extract to its own component
-            <View style={styles.row}>
-              <SearchField
-                noDelay
-                placeholder={'Filtre por nome'}
-                onChangeValue={setNameFilter}
-                style={styles.searchField}
-              />
-              <Button.Primary
-                style={styles.favoriteFilter}
-                icon={favoritesFilter ? 'star' : 'star-outline'}
-                onPress={favoritesFilter ? () => setFavoritesFilter(undefined) : () => setFavoritesFilter(true)}
-              />
-            </View>
-          }
-          ListFooterComponent={<FetchingMore isLoading={!!isFetchingMore} />}
-          ItemSeparatorComponent={Separator}
-        />
+        <>
+          {/* Header field placed outside FlatList's ListHeadComponent prop for two reasons:
+              1. The header sticks this way
+              2. The search field becomes acessible to screen readers
+          */}
+          <FilterHeader
+            favoritesFilterActive={!!favoritesFilter}
+            onChangeNameFilter={setNameFilter}
+            onToggleFavoritesFilter={toggleFavoritesFilter}
+          />
+          <FlatList
+            testID={'list'}
+            extraData={favorites}
+            refreshing={isFetching && !isLoading}
+            onRefresh={onRefresh}
+            onEndReachedThreshold={0.1}
+            onEndReached={onEndReached}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            data={filteredData}
+            ListFooterComponent={<FetchingMore isLoading={!!isFetchingMore} />}
+            ItemSeparatorComponent={Separator}
+          />
+        </>
       )}
       {isLoading && <ActivityIndicator testID={'fetching-more-indicator'} size={'large'} />}
       <Attribution text={attribution} />
     </SafeAreaView>
   )
 }
-
-// TODO: Extract to its own component
-const FetchingMore = ({ isLoading }: { isLoading: boolean }) => (
-  <View>
-    <ActivityIndicator animating={isLoading} testID={'initial-loading-indicator'} />
-  </View>
-)
 
 ListingScreen.whyDidYouRender = true
 

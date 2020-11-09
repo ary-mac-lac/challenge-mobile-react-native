@@ -1,4 +1,4 @@
-// @ts-nocheck -- Defining redux states make my head hurt
+// @ts-nocheck -- Defining redux state makes my head hurt
 import { Persistor } from 'redux-persist'
 import { combineReducers } from 'redux'
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit'
@@ -9,14 +9,14 @@ import GlobalStore from './store'
 import persistConfig, { updateReducers } from '../../Config/ReduxPersist'
 import UserFeature from '../../Features/User'
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   entity: combineReducers({
     user: UserFeature.reducers.entity,
   }),
 })
 
 interface CreateStoreHelper {
-  store: EnhancedStore<GlobalState, any>
+  store: GlobalStore
   persistor: Persistor
 }
 
@@ -37,4 +37,6 @@ export default {
   store: GlobalStore,
 }
 
-export type GlobalState = ReturnType<typeof rootReducer>
+// Redeclaring these states here to avoid require-cycle involving Entities folder
+type GlobalState = ReturnType<typeof rootReducer>
+type GlobalStore = EnhancedStore<GlobalState, any>

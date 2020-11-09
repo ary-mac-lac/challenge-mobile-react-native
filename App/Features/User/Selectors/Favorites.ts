@@ -1,4 +1,4 @@
-import { GlobalState } from '../../../Config/Redux'
+import { GlobalState } from '../../../Entities'
 import { FavoritesList } from '../Redux/Favorites'
 
 const getFavorites = (state: GlobalState): FavoritesList => state.entity.user.favorites

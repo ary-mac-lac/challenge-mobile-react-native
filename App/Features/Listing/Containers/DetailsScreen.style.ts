@@ -18,11 +18,12 @@ export default () =>
       paddingVertical: 16,
       paddingHorizontal: 16,
     },
-    section: {
-      fontWeight: '500',
+    sectionHeader: {
+      fontWeight: '700',
+      fontSize: 24,
       color: '#000',
       marginBottom: 16,
-      textTransform: 'uppercase',
+      marginTop: 36,
     },
     bullet: {
       backgroundColor: '#222',
@@ -34,7 +35,6 @@ export default () =>
     itemContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 2,
     },
     separator: {
       width: '95%',
@@ -51,14 +51,21 @@ export default () =>
     },
     headerSeparator: {
       width: '100%',
-      marginVertical: 20,
     },
     headerContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      paddingVertical: 24,
+      paddingHorizontal: 16,
     },
     item: {
       flex: 1,
+      letterSpacing: 0.15,
+      lineHeight: 23,
+    },
+    description: {
+      lineHeight: 23,
+      letterSpacing: 0.15,
     },
   })

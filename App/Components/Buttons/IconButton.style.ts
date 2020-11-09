@@ -4,11 +4,12 @@ export default () =>
   StyleSheet.create({
     container: {
       height: 45,
-      paddingHorizontal: 16,
-      backgroundColor: '#FFF',
+      aspectRatio: 1,
+      width: 44,
+      borderRadius: 40,
       justifyContent: 'center',
-      borderRadius: 10,
       alignItems: 'center',
+      backgroundColor: '#FFF',
       flexDirection: 'row',
       shadowColor: '#000',
       shadowOffset: {
@@ -18,17 +19,5 @@ export default () =>
       shadowOpacity: 0.22,
       shadowRadius: 2.22,
       elevation: 3,
-    },
-    onlyIconContainer: {
-      aspectRatio: 1,
-      width: 44,
-      borderRadius: 40,
-      paddingHorizontal: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    label: {
-      letterSpacing: 0.4,
-      fontWeight: '600',
     },
   })

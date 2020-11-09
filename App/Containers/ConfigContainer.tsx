@@ -12,9 +12,10 @@ import { RootStack, TestingStack } from '../Navigation'
 import { DebugConfig, StorybookUI } from '../Config'
 
 if (__DEV__) {
-  // whyDidYouRender(React, {
-  //   trackAllPureComponents: true,
-  // })
+  whyDidYouRender(React, {
+    trackAllPureComponents: false,
+    onlyLogs: true,
+  })
 }
 
 export const ConfigContainer = (): JSX.Element => {

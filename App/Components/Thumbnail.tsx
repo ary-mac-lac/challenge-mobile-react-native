@@ -12,6 +12,7 @@ const Thumbnail: React.FC<Props> = ({ size, imgSource }) => {
   return (
     <View style={styles.container}>
       <Image
+        accessibilityIgnoresInvertColors
         testID={'thumbnail-image'}
         source={{ uri: imgSource }}
         style={[styles.image, !!size && { height: size, borderRadius: size / 2 }]}

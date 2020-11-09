@@ -1,8 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { persistStore, Persistor } from 'redux-persist'
-import { Store } from 'redux'
-import { GlobalState } from '../Config/Redux'
+import { GlobalStore } from '../Entities'
 
 const ReduxPersist = {
   active: true,
@@ -14,7 +13,7 @@ const ReduxPersist = {
   },
 }
 
-export const updateReducers = (store: Store<GlobalState, any>): Persistor => {
+export const updateReducers = (store: GlobalStore): Persistor => {
   const reducerVersion = ReduxPersist.reducerVersion
 
   // Check to ensure latest reducer version

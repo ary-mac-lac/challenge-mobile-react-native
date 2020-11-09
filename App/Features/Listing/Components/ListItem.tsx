@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Pressable, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { Thumbnail } from '../../../Components'
@@ -17,9 +17,17 @@ export interface Props {
 const ListItem: React.FC<Props> = ({ onPress, imgSource, isFavorite, title = '', description = '' }) => {
   const styles = getStyles()
   const hasDescription = description !== ''
+  const _description = hasDescription ? description : 'Description unavailable'
 
   return (
-    <Pressable style={styles.container} onPress={onPress} disabled={!onPress} testID={`list-item-${title}`}>
+    <TouchableOpacity
+      accessibilityRole={'button'}
+      accessibilityLabel={`${title}, ${_description}, ${isFavorite ? 'favorited' : ''}`}
+      accessibilityHint={'Click to open character details'}
+      style={styles.container}
+      onPress={onPress}
+      disabled={!onPress}
+      testID={`list-item-${title}`}>
       <Thumbnail imgSource={imgSource} />
       <View style={styles.textContainer}>
         <View style={styles.row}>
@@ -33,10 +41,10 @@ const ListItem: React.FC<Props> = ({ onPress, imgSource, isFavorite, title = '',
           style={hasDescription ? styles.description : styles.unavailable}
           numberOfLines={4}
           ellipsizeMode={'tail'}>
-          {hasDescription ? description : 'Description unavailable.'}
+          {_description}
         </Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

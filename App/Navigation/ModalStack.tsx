@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { Character } from '../Entities'
 import ListingFeature from '../Features/Listing'
-import { addOpacity } from '../Utils'
 
 export type ModalNavigatorParams = {
   DetailsScreen: { character: Character; attribution: string }

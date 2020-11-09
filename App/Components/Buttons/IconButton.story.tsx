@@ -2,14 +2,12 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { storiesOf } from '@storybook/react-native'
 
-import PrimaryButton from './PrimaryButton'
+import IconButton from './IconButton'
 
 storiesOf('Primary Button', module)
-  // @ts-ignore
   .addDecorator((storyFn) => <View style={styles.decorator}>{storyFn()}</View>)
-  .add('Default', () => <PrimaryButton label={'Favoritar'} onPress={() => {}} />)
-  .add('Favoritar', () => <PrimaryButton label={'Favoritar'} onPress={() => {}} icon={'star'} />)
-  .add('Desfavoritar', () => <PrimaryButton label={'Desfavoritar'} onPress={() => {}} icon={'star-outline'} />)
+  .add('Favoritar', () => <IconButton onPress={() => {}} icon={'star'} />)
+  .add('Desfavoritar', () => <IconButton onPress={() => {}} icon={'star-outline'} />)
 
 const styles = StyleSheet.create({
   decorator: {

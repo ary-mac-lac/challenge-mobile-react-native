@@ -1,7 +1,9 @@
 import ListingScreen from './ListingScreen'
 import DetailsScreen from './DetailsScreen'
 
-// TODO: Comment explaining why this is exported this way
+// In order to make a feature as encapsulated as possible, the idea is to prevent the need to import directly from the screen file
+// So two screen objects are exported instead. One will be passed to modal navigator, the other to main navigator
+// https://reactnavigation.org/docs/nesting-navigators/#best-practices-when-nesting
 
 export default {
   modals: {

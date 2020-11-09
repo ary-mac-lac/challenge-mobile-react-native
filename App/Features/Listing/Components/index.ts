@@ -1,3 +1,5 @@
 export { default as Attribution } from './Attribution'
 export { default as ListItem } from './ListItem'
 export { default as SearchField } from './SearchField'
+export { default as FetchingMore } from './FetchingMore'
+export { default as FilterHeader } from './FilterHeader'

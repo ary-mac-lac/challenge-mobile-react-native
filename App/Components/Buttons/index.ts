@@ -1,3 +1,3 @@
-import Primary from './PrimaryButton'
+import Icon from './IconButton'
 
-export default { Primary }
+export default { Icon }

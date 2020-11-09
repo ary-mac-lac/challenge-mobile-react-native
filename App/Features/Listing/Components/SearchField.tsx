@@ -1,6 +1,7 @@
 import React from 'react'
 import { TextInput, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Timeout } from '../../../Entities'
 import getStyles from './SearchField.style'
 
 interface Props {
@@ -8,13 +9,14 @@ interface Props {
   onChangeValue: (text: string) => void
   placeholder?: string
   noDelay?: boolean
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
+  buttonAccessibilityLabel?: string
+  buttonAccessibilityHint?: string
 }
 
-// TODO: extract to utility types file
-type Timeout = ReturnType<typeof setTimeout>
-
 const SearchField: React.FC<Props> = ({
+  buttonAccessibilityLabel,
+  buttonAccessibilityHint,
   onChangeValueDelay = 2000,
   onChangeValue,
   placeholder,
@@ -25,7 +27,7 @@ const SearchField: React.FC<Props> = ({
   const timeout = React.useRef<Timeout>()
   const [internalValue, setInternalValue] = React.useState('')
 
-  // By default, this component triggers the search callback after a (default) 2-second timeout for efficiency reasons
+  // By default, this component triggers the search callback after a 2-second timeout for efficiency reasons
   // But this behavior can be overriden in favor of immediate searches using the `noDelay` prop
   const updateValue = (text: string) => {
     setInternalValue(text)
@@ -49,10 +51,22 @@ const SearchField: React.FC<Props> = ({
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity style={styles.iconContainer} onPress={manualSearch}>
+      <TouchableOpacity
+        accessibilityHint={buttonAccessibilityHint}
+        accessibilityLabel={buttonAccessibilityLabel}
+        style={styles.iconContainer}
+        onPress={manualSearch}>
         <Icon name="md-search-outline" size={24} style={styles.icon} />
       </TouchableOpacity>
-      <TextInput style={styles.input} value={internalValue} onChangeText={updateValue} placeholder={placeholder} />
+      <TextInput
+        accessibilityRole={'search'}
+        accessibilityHint={'The search will be executed automatically as you type'}
+        style={styles.input}
+        value={internalValue}
+        onChangeText={updateValue}
+        placeholder={placeholder}
+        placeholderTextColor={'#767676'}
+      />
     </View>
   )
 }
